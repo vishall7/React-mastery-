@@ -50,6 +50,19 @@ function App() {
     setTimeout(() => setTaskErrorId(null), 2000);    
   }
   
+  const duplicateTask = (id) => {
+    setTasks((prev) => {
+      const newTask = prev.find((eachTask) => eachTask.id === id);
+      if(newTask.task.trim() !== '') {
+        return [...prev, {...newTask, id: Date.now()}]
+      }
+      else {
+        setTaskErrorId(newTask.id);
+        setTimeout(() => setTaskErrorId(null), 2000);
+      }
+      return prev
+    })
+  }  
     
   const addTaskTolist = (task) => {
     if (tasks.length === 0 || tasks[tasks.length - 1].task.trim() !== "") {
@@ -70,9 +83,9 @@ function App() {
   }  
 
   return (
-    <CheckListContextProvider value={{tasks, addTask, updateTask, removeTask, updateDescription, toggleTaskInfo, toggleComplete, setPriority}}>
+    <CheckListContextProvider value={{tasks, addTask, updateTask, removeTask, updateDescription, toggleTaskInfo, toggleComplete, setPriority, duplicateTask}}>
     <div className='App w-full h-screen flex justify-center items-center bg-sky-500'>
-      <div className='w-2/5 h-full border border-t-8 border-b border-slate-500 rounded-xl shadow-zinc-300 flex flex-col bg-slate-50'>
+      <div className='w-2/5 h-[95%] border border-t-8 border-b border-slate-500 rounded-2xl shadow-lg shadow-zinc-600 flex flex-col bg-slate-50'>
         <div className='w-full px-5 p-3 border-b'>
           <h1 className='text-2xl font-semibold '>My Tasks</h1>
         </div>
@@ -83,7 +96,7 @@ function App() {
             </div>
           }
           {tasks.map((task) => 
-              <div key={task.id} className='w-full my-4'>
+              <div key={task.id} className='w-full mt-0 my-4'>
                 <Task                           
                 isTaskInfoOpen={openTaskInfoId === task.id}
                 task={task}
@@ -93,7 +106,7 @@ function App() {
             )
           }          
         </div>
-        <div className='w-full flex justify-end gap-4 items-center pt-5 p-2 border'>
+        <div className='w-full flex justify-end gap-4 items-center p-3 border rounded-b-2xl'>
           <h3 className='text-sm text-slate-600'>{true ? 'add your task here' : 'enter your task details first'}</h3>
           <button 
           className='border p-2 bg-slate-500 rounded-xl text-sm text-white hover:bg-slate-600'

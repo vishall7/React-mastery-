@@ -11,14 +11,17 @@ function Task({ task, isTaskInfoOpen, taskError }) {
   const [isDescReadOnly, setIsDescReadOnly] = useState(false); 
   const [positionClass, setPositionClass] = useState('top-[100%]');
   const [isDescOpen, setIsDescOpen] = useState(false);
-  const [priorityColors, setPriorityColors] = useState({});   
+  const [priorityColors, setPriorityColors] = useState(
+    { name: '', border: '#94a3b8', bg: '#f1f5f9', afterCheckBg: '#94a3b8'}
+  );  
 
   const descriptionRef = useRef(null);
-  const taskRef = useRef(null);
+  const taskRef = useRef(null);  
 
   const { updateTask, updateDescription, toggleTaskInfo, tasks, toggleComplete } = useCheckListContext();
 
-  const colors = [    
+  const colors = [
+    { name: '', border: '#94a3b8', bg: '#f1f5f9', afterCheckBg: '#94a3b8'},    
     { name: 'Low', border: '#a3e635', bg: '#ecfccb', afterCheckBg: '#a3e635'},
     { name: 'Medium', border: '#facc15', bg: '#fef9c3', afterCheckBg: '#facc15' },
     { name: 'High', border: '#fb923c', bg: '#ffedd5', afterCheckBg: '#fb923c' },
@@ -28,16 +31,25 @@ function Task({ task, isTaskInfoOpen, taskError }) {
   useEffect(()=>{
     if(taskValue.trim() !== '') {
       const colorObject = colors.find(color => color.name === task.priority);
-      setPriorityColors(colorObject);
-    }
-  }, [task.priority])   
+      setPriorityColors(colorObject);      
+    }       
+  }, [taskValue, task.priority]);   
   
+
   
   const onTaskChange = (e) => {
     setTaskValue(e.target.value);
     updateTask(task.id, e.target.value);
   };
 
+  const onCheckBoxChange = (e) => {
+    if(task.task.trim() !== '') {
+      setIsTaskDone(e.target.checked);
+      toggleComplete(task.id, e.target.checked);
+      setIsDescOpen(false);
+    }    
+  } 
+  
   const onDescChange = (e) => {
     setDescription(e.target.value);
     updateDescription(task.id, e.target.value);
@@ -60,27 +72,32 @@ function Task({ task, isTaskInfoOpen, taskError }) {
     }
   }, [isTaskInfoOpen]);
 
-  
+  const onError = () => {
+    return taskError ? 'border border-red-400 shadow-md shadow-red-200' : ''; 
+  }
+
   return (
     <>
-    <div ref={taskRef} className='relative w-full rounded-lg flex flex-col gap-2 items-center p-2 bg-slate-50 shadow-xl '>
+    <div ref={taskRef} 
+    className={`relative w-full rounded-lg flex flex-col gap-2 items-center p-2 bg-slate-50 shadow-lg shadow-zinc-300 ${onError()}`}   
+    >
       <div className='w-full flex justify-between gap-x-1 px-1 items-center'>
         <input
-          className=' w-5 h-5 appearance-none border-2 rounded shrink-0'
+          className={`w-5 h-5 appearance-none border-2 rounded shrink-0 cursor-pointer`}
           style={{
-            backgroundColor:  isTaskDone ? priorityColors.afterCheckBg || '#94a3b8' : priorityColors.bg || '#e2e8f0',
-            borderColor: priorityColors.border || '#94a3b8',  
+            backgroundColor:  isTaskDone ? priorityColors.afterCheckBg || 'black' : priorityColors.bg || 'black',
+            borderColor: priorityColors.border || 'black',  
           }}
           type='checkbox'
           checked={isTaskDone}
-          onChange={() => setIsTaskDone(!isTaskDone) && toggleComplete(task.id)}
+          onChange={(e) => onCheckBoxChange(e)}
         />
 
         <input
           className='w-full px-2 py-1 rounded-lg outline-none text-[1rem] truncate bg-inherit'
           style={{
             textDecorationLine: (isTaskDone && taskValue) ? 'line-through' : 'none',
-            textDecorationColor: isTaskDone ? 'gray' : 'black',
+            textDecorationColor: isTaskDone &&  'black',
             color: isTaskDone ? 'gray' : 'black',
           }}
           type='text'
@@ -93,8 +110,8 @@ function Task({ task, isTaskInfoOpen, taskError }) {
           onDoubleClick={() => setIsTaskReadOnly(!isTaskReadOnly)}
         />
 
-        <div className='flex justify-end gap-x-1 p-1 mr-1 items-center'>
-          <LuAlignJustify
+        <div className='taskInfo flex justify-end gap-x-1 p-1 mr-1 items-center'>
+          <LuAlignJustify            
             className='w-4 h-4 text-zinc-600 cursor-pointer'
             onClick={()=>toggleTaskInfo(task.id)}
           />
@@ -118,7 +135,7 @@ function Task({ task, isTaskInfoOpen, taskError }) {
               overflowWrap: 'break-word',
               whiteSpace: 'pre-wrap',
               boxSizing: 'border-box',
-              padding: '0.5rem',
+              padding: '0.4rem 0.5rem',
               resize: 'none',
               overflow: 'hidden',
             }}
@@ -129,7 +146,7 @@ function Task({ task, isTaskInfoOpen, taskError }) {
             
       {
         isTaskInfoOpen && 
-        <TaskInfo 
+        <TaskInfo             
           task={task} 
           positionClass={positionClass} 
           toggleDesc={()=>setIsDescOpen(!isDescOpen)}

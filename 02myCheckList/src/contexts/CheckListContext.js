@@ -16,7 +16,8 @@ export const CheckListContext = createContext({
     removeTask: (id) => {},
     updateTask: (id, task) => {},
     updateDescription: (id, description) => {},
-    setPriority: (id, priority) => {},    
+    setPriority: (id, priority) => {},
+    duplicateTask: (id) => {},   
 });
 
 export const CheckListContextProvider = CheckListContext.Provider;
