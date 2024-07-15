@@ -2,17 +2,10 @@ import { useEffect, useState } from 'react'
 import { CheckListContextProvider } from "./contexts"
 import Task from "./components/Task"
 
-// i will add context here
-  // will define the state of the tasks(list of tasks)
-  // will define state of the checklist(wether it have task or not),
-  // will define state of the taskinfo(wether it is open or not),
-  // if open will show the taskinfo and manage other UI elements  
-
 function App() {   
   const [tasks, setTasks] = useState([])
   const [openTaskInfoId, setOpenTaskInfoId] = useState(null);
   const [taskErrorId, setTaskErrorId] = useState(null);
- const [taskCompleted, setTaskCompleted] = useState([]);
   
   const addTask = (task) => {    
     setTasks((prev) => [...prev, task])
@@ -116,17 +109,17 @@ function App() {
   },[tasks]) 
 
   useEffect(()=>{
+    let emptyTaskTimeout;
     tasks.map((task) => {
       if (task.task.trim() === "") {
-        setTimeout(() => {
+        emptyTaskTimeout = setTimeout(() => {
           setTasks(prev => prev.filter(eachTask => eachTask.id !== task.id))
         }, 10000);
       }
       return task
     })
-  },[addTask, addTaskTolist])
-  
-  
+    return () => clearTimeout(emptyTaskTimeout)
+  },[tasks]) 
   
   return (
     <CheckListContextProvider value={{tasks, addTask, updateTask, removeTask, updateDescription, toggleTaskInfo, toggleComplete, setPriority, duplicateTask}}>

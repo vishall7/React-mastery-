@@ -33,8 +33,7 @@ function Task({ task, isTaskInfoOpen, taskError }) {
       const colorObject = colors.find(color => color.name === task.priority);
       setPriorityColors(colorObject);      
     }       
-  }, [taskValue, task.priority]);   
-  
+  }, [taskValue, task.priority]);  
 
   
   const onTaskChange = (e) => {
@@ -48,8 +47,8 @@ function Task({ task, isTaskInfoOpen, taskError }) {
       toggleComplete(task.id, e.target.checked);          
       setIsDescOpen(false);
     }    
-  } 
-  
+  }  
+
   const onDescChange = (e) => {
     setDescription(e.target.value);
     updateDescription(task.id, e.target.value);
@@ -109,7 +108,6 @@ function Task({ task, isTaskInfoOpen, taskError }) {
           onKeyDown={(e) => e.key === 'Enter' && setIsTaskReadOnly(!isTaskReadOnly)}
           onDoubleClick={() => setIsTaskReadOnly(!isTaskReadOnly)}
         />
-
         <div className='taskInfo flex justify-end gap-x-1 p-1 mr-1 items-center'>
           <LuAlignJustify            
             className='w-4 h-4 text-zinc-600 cursor-pointer'
@@ -142,8 +140,7 @@ function Task({ task, isTaskInfoOpen, taskError }) {
             >
           </textarea>
         </div>
-      }     
-            
+      }           
       {
         isTaskInfoOpen && 
         <TaskInfo             
