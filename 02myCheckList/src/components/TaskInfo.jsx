@@ -10,12 +10,10 @@ function TaskInfo({ task, positionClass, toggleDesc, showOrHideDesc}) {
   const { toggleTaskInfo, removeTask, setPriority, duplicateTask } = useCheckListContext();  
 
   const handlePriority = (id, priority) => {  
-    if(task.task.trim() !== '') {
-      const newPriority = currentTaskPriority === priority ? "" : priority;
-      setCurrentTaskPriority(newPriority);
-      setPriority(id, newPriority);
-      toggleTaskInfo(task.id);      
-    }       
+    const newPriority = currentTaskPriority === priority ? "" : priority;
+    setCurrentTaskPriority(newPriority);
+    setPriority(id, newPriority);
+    toggleTaskInfo(task.id);        
   };
   
   const getPriorityClasses = (priority) => {
@@ -54,40 +52,40 @@ function TaskInfo({ task, positionClass, toggleDesc, showOrHideDesc}) {
   return (
     <div
       ref={taskInfoRef}
-      className={`z-10 w-[45%]  rounded-lg border bg-white shadow-lg shadow-zinc-400 absolute left-[calc(100%_-_55%)] ${positionClass}`}>
-      <div className='absolute left-[calc(100%_-_1.9rem)] text-[0.9rem] cursor-pointer text-neutral-600 hover:bg-zinc-100 rounded-md p-2'
+      className={`z-10 sm:w-[30%] w-[55%] text-[0.7rem] sm:text-sm rounded-lg border bg-white shadow-lg shadow-zinc-400 absolute sm:left-[calc(100%_-_37%)] left-[calc(100%_-_70%)] ${positionClass}`}>
+      <div className='absolute left-[calc(100%_-_1.9rem)] sm:text-[0.9rem] cursor-pointer text-neutral-600 hover:bg-zinc-100 rounded-md p-2'
         onClick={() => toggleTaskInfo(task.id)}>
         <MdClose />
       </div>
-      <div className='p-3 w-full'>
-                <h3 className='mb-2 text-[1rem] cursor-default'>Priority</h3>
-        <div className="w-full flex justify-between items-center gap-3 ">
+      <div className='p-2 w-full  '>
+                <h3 className='mb-2 cursor-default'>Priority</h3>
+        <div className="w-full flex justify-between items-center gap-x-1 sm:px-2 ">
           <div
             onClick={() => handlePriority(task.id, "Low")}
-            className={`w-full flex justify-center items-center rounded-md p-2 text-lime-400 cursor-pointer border ${getPriorityClasses("Low")}`}>
-            <IoFlagSharp className='h-4 w-4' name='Low'/>
+            className={`flex justify-center items-center rounded-md p-[0.4rem] sm:p-2 text-lime-400 cursor-pointer border ${getPriorityClasses("Low")}`}>
+            <IoFlagSharp className='' name='Low'/>
           </div>
           <div
             onClick={() => handlePriority(task.id, 'Medium')}
-            className={`w-full flex justify-center items-center rounded-md p-2 text-yellow-400 cursor-pointer border ${getPriorityClasses("Medium")}`}>
-            <IoFlagSharp className='h-4 w-4' name='Medium' />
+            className={`flex justify-center items-center rounded-md p-[0.4rem] sm:p-2 text-yellow-400 cursor-pointer border ${getPriorityClasses("Medium")}`}>
+            <IoFlagSharp className='' name='Medium' />
           </div>
           <div        
             onClick={(e) => handlePriority(task.id, "High")}
-            className={`w-full flex justify-center items-center rounded-md p-2 text-orange-400 cursor-pointer border ${getPriorityClasses("High")}`}>
-            <IoFlagSharp className='h-4 w-4' name='High'/>
+            className={`flex justify-center items-center rounded-md p-[0.4rem] sm:p-2 text-orange-400 cursor-pointer border ${getPriorityClasses("High")}`}>
+            <IoFlagSharp className='' name='High'/>
           </div>
           <div            
             onClick={() => handlePriority(task.id, "Extreme")}
-            className={`w-full flex justify-center items-center rounded-md p-2 text-red-400 cursor-pointer border ${getPriorityClasses("Extreme")}`}>
-            <IoFlagSharp className='h-4 w-4' name='Extreme'/>
+            className={`flex justify-center items-center rounded-md p-[0.4rem] sm:p-2 text-red-400 cursor-pointer border ${getPriorityClasses("Extreme")}`}>
+            <IoFlagSharp className='' name='Extreme'/>
           </div>
         </div>
       </div>
 
-      <div className='w-full bg-slate-300 h-[1px] my-2'></div>
+      <div className='w-full bg-slate-300 h-[1px] my-1'></div>
 
-      <div className=' w-full my-2 text-[1rem] flex flex-col gap-2 cursor-default'>        
+      <div className=' w-full my-2 flex flex-col gap-2 cursor-default'>        
         <h3 
         onClick={onToggleDesc}        
         className='px-3 py-1 hover:bg-zinc-200'
@@ -104,7 +102,7 @@ function TaskInfo({ task, positionClass, toggleDesc, showOrHideDesc}) {
       <div
       onClick={() => removeTask(task.id)}
       >
-        <h3 className='px-3 w-full my-2 text-[1rem] hover:text-red-400 cursor-pointer'>Delete task</h3>
+        <h3 className='px-3 w-full my-2  hover:text-red-400 cursor-pointer'>Delete task</h3>
       </div>
     </div>
   );

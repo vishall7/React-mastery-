@@ -18,7 +18,7 @@ function Task({ task, isTaskInfoOpen, taskError }) {
   const descriptionRef = useRef(null);
   const taskRef = useRef(null);  
 
-  const { updateTask, updateDescription, toggleTaskInfo, tasks, toggleComplete } = useCheckListContext();
+  const { updateTask, updateDescription, toggleTaskInfo, tasks, toggleComplete, taskComplete } = useCheckListContext();
 
   const colors = [
     { name: '', border: '#94a3b8', bg: '#f1f5f9', afterCheckBg: '#94a3b8'},    
@@ -29,7 +29,7 @@ function Task({ task, isTaskInfoOpen, taskError }) {
   ]
 
   useEffect(()=>{
-    if(taskValue.trim() !== '') {
+    if(taskValue?.trim() !== '') {
       const colorObject = colors.find(color => color.name === task.priority);
       setPriorityColors(colorObject);      
     }       
@@ -45,7 +45,7 @@ function Task({ task, isTaskInfoOpen, taskError }) {
   const onCheckBoxChange = (e) => {
     if(task.task.trim() !== '') {
       setIsTaskDone(e.target.checked);
-      toggleComplete(task.id, e.target.checked);
+      toggleComplete(task.id, e.target.checked);          
       setIsDescOpen(false);
     }    
   } 
@@ -94,7 +94,7 @@ function Task({ task, isTaskInfoOpen, taskError }) {
         />
 
         <input
-          className='w-full px-2 py-1 rounded-lg outline-none text-[1rem] truncate bg-inherit'
+          className='w-full px-2 py-1 rounded-lg outline-none text-sm truncate bg-inherit'
           style={{
             textDecorationLine: (isTaskDone && taskValue) ? 'line-through' : 'none',
             textDecorationColor: isTaskDone &&  'black',
@@ -122,7 +122,7 @@ function Task({ task, isTaskInfoOpen, taskError }) {
         <div className='w-full text-slate-600'>
           <textarea
             ref={descriptionRef}
-            className='w-[90%] ml-6 rounded-lg border outline-none p-4 h-40 bg-inherit'
+            className='w-[90%] ml-4 rounded-lg border outline-none p-4 bg-inherit'
             name="description"
             id="textarea"
             placeholder='Description...'

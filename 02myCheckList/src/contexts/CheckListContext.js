@@ -8,6 +8,7 @@ export const CheckListContext = createContext({
             description: "Description 1",
             priority: "",
             isDone: false,
+            creationTime: '',
         }
     ],
     toggleTaskInfo: (id) => {},
@@ -17,7 +18,8 @@ export const CheckListContext = createContext({
     updateTask: (id, task) => {},
     updateDescription: (id, description) => {},
     setPriority: (id, priority) => {},
-    duplicateTask: (id) => {},   
+    duplicateTask: (id) => {},
+    postionTaskIfCompleted: (id) => {},     
 });
 
 export const CheckListContextProvider = CheckListContext.Provider;
