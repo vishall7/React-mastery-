@@ -17,7 +17,15 @@ function App() {
 
   const removeTask = (id) => {
     setTasks((prev) => prev.filter((eachTask) => eachTask.id !== id))
-  }  
+  } 
+  
+  const refreshTask = (id) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((eachTask) => 
+        eachTask.id === id ? {...eachTask, isDone: false, priority: '', creationTime: new Date()} : eachTask      
+      ).sort((a, b) => new Date(a.creationTime) - new Date(b.creationTime))
+    )
+  };
    
   const updateDescription = (id, description) => {
     setTasks((prev) => prev.map((eachTask) => eachTask.id === id ? {...eachTask, description} : eachTask))
@@ -122,7 +130,7 @@ function App() {
   },[tasks]) 
   
   return (
-    <CheckListContextProvider value={{tasks, addTask, updateTask, removeTask, updateDescription, toggleTaskInfo, toggleComplete, setPriority, duplicateTask}}>
+    <CheckListContextProvider value={{tasks, addTask, updateTask, removeTask, updateDescription, toggleTaskInfo, toggleComplete, setPriority, duplicateTask, refreshTask}}>
     <div className='App w-full h-screen flex justify-center items-center bg-slate-400'>
       <div className='w-[90%] md:w-3/5 lg:w-1/2 h-[95%] border border-t-8 border-b border-slate-600 rounded-2xl shadow-lg shadow-slate-600 flex flex-col bg-slate-50'>
         <div className='w-full px-5 py-2 border-b flex justify-between items-center'>

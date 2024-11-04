@@ -7,7 +7,7 @@ import { useCheckListContext } from '../contexts';
 function TaskInfo({ task, positionClass, toggleDesc, showOrHideDesc}) {
   const [currentTaskPriority, setCurrentTaskPriority] = useState(task.priority); 
   const taskInfoRef = useRef(null); 
-  const { toggleTaskInfo, removeTask, setPriority, duplicateTask } = useCheckListContext();  
+  const { toggleTaskInfo, removeTask, setPriority, duplicateTask, refreshTask } = useCheckListContext();  
 
   const handlePriority = (id, priority) => {  
     const newPriority = currentTaskPriority === priority ? "" : priority;
@@ -26,6 +26,12 @@ function TaskInfo({ task, positionClass, toggleDesc, showOrHideDesc}) {
     duplicateTask(task.id);
     toggleTaskInfo(task.id);
   }
+
+  const onResetClick = (id) => {
+    refreshTask(id);
+    toggleTaskInfo(id);
+  };
+
 
   const onToggleDesc = () => {
     toggleDesc();
@@ -95,6 +101,9 @@ function TaskInfo({ task, positionClass, toggleDesc, showOrHideDesc}) {
         <h3
         onClick={() => onDuplicateClick()} 
         className='px-3 py-1 hover:bg-zinc-200'>Duplicate</h3>
+        <h3
+        onClick={() => onResetClick(task.id)} 
+        className='px-3 py-1 hover:bg-zinc-200'>Reset</h3>
       </div>
 
       <div className='w-full bg-slate-300 h-[1px] my-2'></div>

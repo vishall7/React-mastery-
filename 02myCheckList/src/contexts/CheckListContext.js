@@ -16,6 +16,7 @@ export const CheckListContext = createContext({
     toggleComplete: (id) => {},
     removeTask: (id) => {},
     updateTask: (id, task) => {},
+    refreshTask: (id) => {},
     updateDescription: (id, description) => {},
     setPriority: (id, priority) => {},
     duplicateTask: (id) => {},

@@ -28,6 +28,12 @@ function Task({ task, isTaskInfoOpen, taskError }) {
     { name: 'Extreme', border: '#f87171', bg: '#fee2e2', afterCheckBg: '#f87171' }
   ]
 
+  useEffect(() => {
+    setTaskValue(task.task);
+    setDescription(task.description);
+    setIsTaskDone(task.isDone);
+  }, [task]);
+
   useEffect(()=>{
     if(taskValue?.trim() !== '') {
       const colorObject = colors.find(color => color.name === task.priority);
@@ -73,7 +79,7 @@ function Task({ task, isTaskInfoOpen, taskError }) {
 
   const onError = () => {
     return taskError ? 'border border-red-400 shadow-md shadow-red-200' : ''; 
-  }
+  }  
 
   return (
     <>
@@ -108,12 +114,13 @@ function Task({ task, isTaskInfoOpen, taskError }) {
           onKeyDown={(e) => e.key === 'Enter' && setIsTaskReadOnly(!isTaskReadOnly)}
           onDoubleClick={() => setIsTaskReadOnly(!isTaskReadOnly)}
         />
+        
         <div className='taskInfo flex justify-end gap-x-1 p-1 mr-1 items-center'>
           <LuAlignJustify            
             className='w-4 h-4 text-zinc-600 cursor-pointer'
             onClick={()=>toggleTaskInfo(task.id)}
           />
-        </div>
+        </div>        
       </div>
       {
         isDescOpen && 
